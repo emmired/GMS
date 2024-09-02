@@ -6,11 +6,21 @@
       </div>
       <div class="side-1-nav-bar-container">
         <nav class="side-1-nav-bar">
-          <div class="home"><SvgIcon name="home" /></div>
-          <div class="task1"><SvgIcon name="dashboard" /></div>
-          <div class="profiles"><SvgIcon name="assessment" /></div>
-          <div class="holder1"><SvgIcon name="work_history" /></div>
-          <div class="holder2"><SvgIcon name="setting" /></div>
+          <div class="home">
+            <SvgIcon name="home" />
+          </div>
+          <div class="task1">
+            <SvgIcon name="dashboard" />
+          </div>
+          <div class="profiles">
+            <SvgIcon name="assessment" />
+          </div>
+          <div class="holder1">
+            <SvgIcon name="work_history" />
+          </div>
+          <div class="holder2">
+            <SvgIcon name="setting" />
+          </div>
         </nav>
       </div>
     </div>
@@ -18,14 +28,8 @@
       <template v-slot:before>
         <div class="side-2">
           <div class="app-title">GMS</div>
-          <q-tabs
-            v-model="tab"
-            vertical
-            class="text-teal tab-menu"
-            active-class="active-menu"
-            active-color="black"
-            no-caps
-          >
+          <q-tabs v-model="tab" vertical class="text-teal tab-menu" active-class="active-menu" active-color="black"
+            no-caps>
             <q-tab :ripple="false" class="" name="mails">
               <div class="menu">Profile</div>
             </q-tab>
@@ -44,28 +48,16 @@
           <div class="content-title-container">
             <div class="page-title">Profile / Staff</div>
           </div>
-          <q-tab-panels
-            v-model="tab"
-            animated
-            swipeable
-            vertical
-            transition-prev="jump-up"
-            transition-next="jump-up"
-            class=""
-          >
+          <q-tab-panels v-model="tab" animated swipeable vertical transition-prev="jump-up" transition-next="jump-up"
+            class="">
             <q-tab-panel style="width: 100%; height: 100%" name="mails">
-              <div
-                class="main-content-container"
-                style="height: 100%; overflow: "
-              >
-                <profiles />
+              <div class="main-content-container" style="height: 100%; overflow: ">
+                <Profiles @staff-clicked="showStaffDialog" />
               </div>
             </q-tab-panel>
 
             <q-tab-panel name="alarms">
-              <div
-                class=""
-                style="
+              <div class="" style="
                   width: 100%;
                   height: 100%;
                   background-color: white;
@@ -73,22 +65,15 @@
                   flex-direction: column;
                   justify-content: space-evenly;
                   align-items: center;
-                "
-              >
+                ">
                 <h3 class="text-grey-5">Work in progress</h3>
 
-                <img
-                  src="../../src/assets/tempPlaceholders/uct.png"
-                  alt=""
-                  style="width: 50%"
-                />
+                <img src="../../src/assets/tempPlaceholders/uct.png" alt="" style="width: 50%" />
               </div>
             </q-tab-panel>
 
             <q-tab-panel name="movies">
-              <div
-                class=""
-                style="
+              <div class="" style="
                   width: 100%;
                   height: 100%;
                   background-color: white;
@@ -96,18 +81,40 @@
                   flex-direction: column;
                   justify-content: space-evenly;
                   align-items: center;
-                "
-              >
+                ">
                 <h3 class="text-grey-5">Work in progress</h3>
 
-                <img
-                  src="../../src/assets/tempPlaceholders/uct.png"
-                  alt=""
-                  style="width: 50%"
-                />
+                <img src="../../src/assets/tempPlaceholders/uct.png" alt="" style="width: 50%" />
               </div>
             </q-tab-panel>
           </q-tab-panels>
+
+
+          <q-dialog full-height class=""
+          v-model="isDialogOpen" position="right">
+            <q-card style="width: 350px" class="">
+
+              <q-card-section>
+                <div class="text-h6">{{ selectedStaff.name }}</div>
+              </q-card-section>
+
+              <q-space />
+
+              <q-card-section class="row items-center no-wrap">
+
+                <div><strong>Position:</strong> {{ selectedStaff.position }}</div>
+                <div><strong>Department:</strong> {{ selectedStaff.department }}</div>
+                <div><strong>Contact:</strong> {{ selectedStaff.contact }}</div>
+                <div><strong>Email:</strong> {{ selectedStaff.email }}</div>
+                <div><strong>Location:</strong> {{ selectedStaff.location }}</div>
+                <div><strong>Status:</strong> {{ selectedStaff.status }}</div>
+              </q-card-section>
+
+              <q-card-actions align="right">
+                <q-btn flat label="Close" color="primary" @click="isDialogOpen = false"></q-btn>
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
         </div>
       </template>
     </q-splitter>
@@ -116,15 +123,31 @@
 
 <script>
 import { ref } from "vue";
-import profiles from "src/components/profiles.vue";
-import Staffs from "src/components/Staffs.vue";
+import Profiles from "src/components/Profiles.vue";
 import SvgIcon from "src/components/SvgIcon.vue";
 
 export default {
   components: {
-    profiles,
-    Staffs,
+    Profiles,
     SvgIcon,
+  },
+  data() {
+    return {
+      profileData: '',
+      isDialogOpen: false,
+      selectedStaff: {}
+    };
+  },
+  methods: {
+    toggleProfileQv(data) {
+      this.profileData = data
+      console.log(this.profileData)
+      this.profileQuickView = !this.profileQuickView;
+    },
+    showStaffDialog(staff) {
+      this.selectedStaff = staff;
+      this.isDialogOpen = true;
+    }
   },
   setup() {
     return {
@@ -143,6 +166,7 @@ export default {
 /* Break-points */
 
 @media only screen and (min-width: 600px) {
+
   body,
   html {
     width: 100%;
@@ -234,7 +258,7 @@ export default {
     padding: 100px 0px 0 0px;
   }
 
-  .q-hoverable > div {
+  .q-hoverable>div {
     background: rgb(255, 255, 255);
   }
 
@@ -251,7 +275,7 @@ export default {
     margin: 0px;
   }
 
-  .active-menu > div > div {
+  .active-menu>div>div {
     background-color: #f2f5f7;
     color: rgb(51, 51, 51);
     font-weight: 500;
@@ -265,7 +289,7 @@ export default {
     width: 88%;
   }
 
-  .tab-menu > div {
+  .tab-menu>div {
     color: rgb(152, 162, 179);
   }
 

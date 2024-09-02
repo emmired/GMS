@@ -11,7 +11,8 @@
         <div class="staff-location">Work Location</div>
         <div class="staff-status">Status</div>
       </div>
-      <div class="staff-row" v-for="staff in paginatedData" :key="staff.id">
+      <div @click="emitStaff(staff)"
+      class="staff-row" v-for="staff in paginatedData" :key="staff.id">
         <div class="staff-photo">
           <div><img src="../../src/assets/userPhoto/images.jpeg" alt="staff photo"></div>
         </div>
@@ -54,7 +55,6 @@ export default {
       { id: 2, photo: 'path/to/photo2.jpg', name: 'Jane Smith', position: 'Marketing Manager', department: 'Marketing', contact: '(987) 654-3210', email: 'jane.smith@example.com', location: 'Remote', status: 'Remote' },
       { id: 3, photo: 'path/to/photo3.jpg', name: 'Robert Brown', position: 'HR Specialist', department: 'Human Resources', contact: '(555) 123-4567', email: 'robert.brown@example.com', location: '', status: 'Absent' },
       { id: 4, name: 'John Doe', position: 'Manager', department: 'HR', contact: '123456789', email: 'john.doe@example.com', location: 'Office A', status: 'Active', photo: 'path_to_photo' },
-      // Add more sample data as needed
       { id: 5, name: 'John Doe', position: 'Manager', department: 'HR', contact: '123456789', email: 'john.doe@example.com', location: 'Office A', status: 'Active', photo: 'path_to_photo' },
       { id: 6, name: 'John Doe', position: 'Manager', department: 'HR', contact: '123456789', email: 'john.doe@example.com', location: 'Office A', status: 'Active', photo: 'path_to_photo' },
       { id: 7, name: 'John Doe', position: 'Manager', department: 'HR', contact: '123456789', email: 'john.doe@example.com', location: 'Office A', status: 'Active', photo: 'path_to_photo' },
@@ -106,6 +106,9 @@ export default {
   methods: {
     handlePageChange(page) {
       this.currentPage = page;
+    },
+    emitStaff(staff) {
+      this.$emit('staff-clicked', staff)
     }
   }
 };
